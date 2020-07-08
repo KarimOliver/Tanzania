@@ -18,13 +18,20 @@ def processed_dataset():
     #using helper function to split dataset
     X_train, X_test, y_train, y_test = load_data_and_split()
     
+    #using helper function to transform missig location specific values
+    X_train, X_test = transform_location_values(X_train, X_test)
+    
     #using helper function to trim down X features
     X_train = drop_unnecessary_feature_columns(X_train)
     X_test = drop_unnecessary_feature_columns(X_test)
     
-    #using helper functio to fill NaNs
+    #using helper function to fill NaNs
     fill_all_nans(X_train)
     fill_all_nans(X_test)
+    
+    #replace 0 in construction_year with its mean
+    X_train.construction_year.replace(0, 2000, inplace=True)
+    X_test.construction_year.replace(0, 2000, inplace=True)
     
     #using helper function to process y_train and y_test
     y_train, y_test, classes_dict = process_y_sets(y_train, y_test)
@@ -55,6 +62,50 @@ def load_data_and_split():
     return X_train, X_test, y_train, y_test
 
 
+def transform_location_values(X_train, X_test):
+    """This function goes through the columns latitude, longitude,
+    gps_height and population and replaces all the 0s and 1s to nulls
+    first. (many longitude values were found to be zero so to 
+    impute those we'll convert the latitudes to 0 too)
+    
+    We then transform these nulls into the means of other 
+    similar cases within the same district_code, subvillage, and basin)
+    
+     """
+    trans = ['longitude', 'latitude', 'gps_height', 'population']
+    
+    #if long is 0, lat becomes 0
+    for i in [X_train, X_test]:
+        i.loc[i.longitude == 0, 'latitude'] = 0
+    
+    #replace 0 or 1 with Nan
+    for z in trans:
+        for i in [X_train, X_test]:
+            i[z].replace(0., np.NaN, inplace = True)
+            i[z].replace(0, np.NaN, inplace = True)
+            i[z].replace(1., np.NaN, inplace = True)
+            i[z].replace(1, np.NaN, inplace = True)
+        
+        #loop through the categories of interest to find the means
+        #of interest filling them in order of subvillage, then district
+        #then basin
+        for j in ['subvillage', 'district_code', 'basin']:
+        
+            X_train['mean'] = X_train.groupby([j])[z].transform('mean')
+            X_train[z] = X_train[z].fillna(X_train['mean'])
+            o = X_train.groupby([j])[z].mean()
+            fill = pd.merge(X_test, pd.DataFrame(o), left_on=[j], right_index=True, how='left').iloc[:,-1]
+            X_test[z] = X_test[z].fillna(fill)
+        
+        #if still not found, we'll fill the nulls with the mean of the columns
+        X_train[z] = X_train[z].fillna(X_train[z].mean())
+        X_test[z] = X_test[z].fillna(X_train[z].mean())
+        del X_train['mean']
+    
+    
+    return X_train, X_test
+
+
 def drop_unnecessary_feature_columns(df):
     """This function drops all the investigated unnecessary 
     columns from the features dataframe and returns the 
@@ -63,7 +114,7 @@ def drop_unnecessary_feature_columns(df):
     
     df.drop(['id', 'date_recorded', 'recorded_by', 'wpt_name',
              'scheme_name', 'num_private', 'subvillage', 'ward',
-             'longitude', 'latitude', 'extraction_type_class', 
+             'amount_tsh', 'extraction_type_class', 'region_code',
              'management_group', 'payment_type', 'quality_group',
              'quantity_group', 'source_type', 'source_class', 
              'waterpoint_type_group', 'installer', 'funder'], 
@@ -170,6 +221,9 @@ def identifying_feature_types(df):
             categorical_features.append(name)
         else:
             numeric_features.append(name)
+    
+    #append the list with region and district code
+    categorical_features.append('district_code')
     
     return numeric_features, categorical_features
 

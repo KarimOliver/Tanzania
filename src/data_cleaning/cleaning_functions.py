@@ -7,7 +7,7 @@ from sklearn.preprocessing import OneHotEncoder, LabelEncoder
 
 def load_data_files():
     """In this function we use the Pandas read_csv method to 
-    convert the csv files in dataframes.
+    convert the csv files into dataframes.
     
     We then split the dataframes into training and testing sets 
     
@@ -58,6 +58,14 @@ def fill_all_nans(df):
         
 
 def create_target(df):
+    """This function takes in a dataframe and
+    converts the column: 'status_group'
+    to classes: 0, 1, 2
+    
+    Returns: a dictionary with classes and a 
+    revised dataframe with column name: 'target'
+    inplace of 'status_group'
+    """
     le = LabelEncoder()
     target = le.fit_transform(df['status_group'])
     target = pd.DataFrame(target, columns=['target'])
@@ -69,29 +77,7 @@ def create_target(df):
     
     return classes_dict, df
 
-def load_data_and_split():
-    """In this function we use the Pandas read_csv method to 
-    convert the csv files in dataframes.
-    
-    We then split the dataframes into training and testing sets 
-    
-    Next we combine the X_train and y_train into one dataframe 
-    
-    in the end we return the X_train, X_test, y_train, y_test and merged dataframe"""
-    
-    #read csvs
-    import pandas as pd
-    features = pd.read_csv('../../data/training_set_values.csv')
-    labels = pd.read_csv('../../data/training_set_labels.csv')
-    
-    #train and test split, random_state of 2020, test_size = 25%
-    from sklearn.model_selection import train_test_split
-    X_train, X_test, y_train, y_test = train_test_split(features, labels, random_state=2020, test_size=0.25)
-    
-    #combine X_train and y_train on common ids
-    df = pd.merge(y_train, X_train) 
-    
-    return X_train, X_test, y_train, y_test, df
+
 
 
 {

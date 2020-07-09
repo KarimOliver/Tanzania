@@ -117,7 +117,8 @@ def drop_unnecessary_feature_columns(df):
              'amount_tsh', 'extraction_type_class', 'region_code',
              'management_group', 'payment_type', 'quality_group',
              'quantity_group', 'source_type', 'source_class', 
-             'waterpoint_type_group', 'installer', 'funder'], 
+             'waterpoint_type_group', 'installer', 'funder', 
+             'extraction_type_group'], 
               axis=1, inplace=True)
     
     return df
@@ -279,6 +280,33 @@ def ohe_all_categorical_features(df):
     return df, encoders
 
 
+def one_hot_encode_test_features(df, name, ohe):
+    """This funciton takes in the test dataframe, a feature name and 
+    an ohe object and then One hot encodes the feature and adds
+    it to the dataframe
+    
+    Returns the transformed test dataframe
+    """
+    
+    single_feature_df = df[[name]]
+    feature_array = ohe.transform(single_feature_df).toarray()
+    ohe_df = pd.DataFrame(feature_array, columns=ohe.categories_[0], index=df.index)
+    df = df.drop(name, axis=1)
+    df = pd.concat([df, ohe_df], axis=1)
+    
+    return df
+
+
+def ohe_train_and_test_features(X_train, X_test):
+    
+    X_train, encoders = ohe_all_categorical_features(X_train)
+    
+    X_test['district_code'] = X_test['district_code'].astype(str)
+    
+    for key in encoders:
+        X_test = one_hot_encode_test_features(X_test, key, encoders[key])
+    
+    return X_train, X_test
 
 {
  "cells": [],

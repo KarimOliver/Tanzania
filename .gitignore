@@ -25,5 +25,4 @@ hs_err_pid*
 # data files
 *.csv
 *.zip
-*.png
 *.shp

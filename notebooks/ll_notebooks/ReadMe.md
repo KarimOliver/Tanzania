@@ -1,0 +1,1 @@
+In this folder we have all the notebooks relating to data exploration, data cleaning, data processing and model iterations.

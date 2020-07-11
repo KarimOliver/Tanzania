@@ -44,7 +44,7 @@ To deploy this model we would implement it in the Water Ministry of Tanzania to 
 
 
 #### Repo Navigation Links
- - [final summary notebook]()-Summary of our project's code and walking through our process.
+ - [final summary notebook](https://github.com/KarimOliver/Tanzania/blob/luluva/notebooks/report/final_analysis_report.ipynb)-Summary of our project's code and walking through our process.
  - [exploratory notebooks folder](https://github.com/KarimOliver/Tanzania/tree/master/exploratory)-The code we used to acheive the results displayed in this repository. 
  - [src folder](https://github.com/KarimOliver/Tanzania/tree/master/src/data_cleaning)-Python modules used to clean and analyze data.
  - [references](https://github.com/KarimOliver/Tanzania/tree/master/references)-Useful information we found and utilized to get a clear understanding of the data.

@@ -326,8 +326,8 @@ def bin_gps_height(df):
     df['gps_height_binned'] = pd.cut(df['gps_height'],
                                      bins=[-150,-1,1,750,1250,1750,3000],
                                      labels=['below surface level', 'at surface level', 
-                                             'above surface upto 750', 'above surface up to 1250',
-                                             'above surface upto 1750', 'above 1750'])
+                                             'above surface upto 750', 'above 750 up to 1250',
+                                             'above 1250 upto 1750', 'above 1750'])
     
     #dropping original column
     df.drop("gps_height", axis=1, inplace=True)

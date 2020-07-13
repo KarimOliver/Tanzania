@@ -82,6 +82,24 @@ def unique_values(features, df):
               len(sub_df[feature].unique()), end='\n\n')
 
 
+def plot_basin_counts(df):
+    """This function plots the count for different classes
+    with regards to the basin they belong to. It requires
+    the dataframe to have a 'target' column for the classes 
+    and a 'basin' column as well
+    """
+    basin_count = df.groupby('basin').target.value_counts(sort=False)
+
+    plt.figure(figsize=(20,8))
+    sns.barplot(x=basin_count.index, y=basin_count, palette=['#1AC7C4', 'teal', '#95190C'])
+    plt.tick_params(axis='x', labelrotation=90, labelsize=15)
+    plt.title('Counts for different classes of Waterwells across different Basins in Tanzania', fontsize=20)
+    plt.xlabel('Basin', fontsize=18)
+    plt.ylabel('Target', fontsize=18)
+    plt.tight_layout()
+    
+    return plt.show()
+
 
 
 

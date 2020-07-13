@@ -15,49 +15,12 @@ Lasty this folder also contains a pdf of the meanings of the columns found in th
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# Modeling
-To begin our modeling we got an overall picure of our data and saw many duplicates and missing values so we did what we could to impute where it was deemed neccesary, and worked on narrowing down on our meaningful feature. To do this we created a basic decision tree to help see how our tree was being split. Now that we had our deemed features of value we then looked at our class types of our wells. This then led to us seeing an inbalance in our data and to fix this we used SMOTE or weighted out classes. This was followed with going through mutliple algorithms to select the best one.
-
-#  Model Evaluation
-In order to determine the effectiveness of our model we focused on the recall score of the non functionaing pumps. We would run our trained model on our test data to see how well it preformed when given novel data.\
-
-# Discussion of deployment
-To deploy this model we would implement it in the Water Ministry of Tanzania to help better predict the wells given a set of features specefied within our model. This will hopefully aid in the development of Tanzania and bring value to their country.
-
-
-
-
-
-
 #### Repo Navigation Links
  - [final summary notebook](https://github.com/KarimOliver/Tanzania/blob/luluva/notebooks/report/final_analysis_report.ipynb)-Summary of our project's code and walking through our process.
  - [exploratory notebooks folder](https://github.com/KarimOliver/Tanzania/tree/master/exploratory)-The code we used to acheive the results displayed in this repository. 
  - [src folder](https://github.com/KarimOliver/Tanzania/tree/master/src/data_cleaning)-Python modules used to clean and analyze data.
  - [references](https://github.com/KarimOliver/Tanzania/tree/master/references)-Useful information we found and utilized to get a clear understanding of the data.
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
+
  
 # General Setup Instructions 
 
@@ -78,5 +41,12 @@ conda activate Tanzania
 python -m ipykernel install --user --name Tanzania --display-name "Python 3 (Tanzania)"
 ```
 
-conda activate Tanzania
-conda env export > environment.yml
+# Modeling
+To begin our modeling we got an overall picure of our data and saw many duplicates and missing values so we did what we could to impute where it was deemed neccesary, and worked on narrowing down on our meaningful feature. To do this we created a basic decision tree to help see how our tree was being split. Now that we had our deemed features of value we then looked at our class types of our wells. This then led to us seeing an inbalance in our data and to fix this we used SMOTE or weighted out classes. This was followed with going through mutliple algorithms to select the best one.
+
+#  Model Evaluation
+In order to determine the effectiveness of our model we focused on the recall score of the non functionaing pumps. We would run our trained model on our test data to see how well it preformed when given novel data.
+
+# Discussion of deployment
+To deploy this model we would implement it in the Water Ministry of Tanzania to help better predict the wells given a set of features specefied within our model. This will hopefully aid in the development of Tanzania and bring value to their country.
+

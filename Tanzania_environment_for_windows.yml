@@ -1,4 +1,4 @@
-name: Tanzania
+name: Tanzania_Windows
 channels:
   - defaults
 dependencies:
